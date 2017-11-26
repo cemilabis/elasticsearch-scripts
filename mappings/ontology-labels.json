@@ -1,0 +1,17 @@
+{
+   "properties":{
+      "uri":{
+         "type":"keyword"
+      },
+      "dataSource":{
+         "type":"keyword"
+      },
+      "labels":{
+         "type":"nested",
+         "properties":{
+            "lang":"keyword",
+            "label":"text"
+         }
+      }
+   }
+}
