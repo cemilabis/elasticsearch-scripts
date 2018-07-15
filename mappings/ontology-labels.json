@@ -1,17 +1,52 @@
-{
-   "properties":{
-      "uri":{
-         "type":"keyword"
+curl -X POST 'http://localhost:9200/sdo' -d \
+'{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "label_analyzer": {
+          "tokenizer": "standard",
+          "char_filter": [
+            "label_filter"
+          ],
+          "filter": [
+            "lowercase"
+          ]
+        }
       },
-      "dataSource":{
-         "type":"keyword"
-      },
-      "labels":{
-         "type":"nested",
-         "properties":{
-            "lang":"keyword",
-            "label":"text"
-         }
+      "char_filter": {
+        "label_filter": {
+          "type": "pattern_replace",
+          "pattern": "_|\\|.",
+          "replacement": " "
+        }
       }
-   }
-}
+    }
+  },
+  "mappings": {
+    "ont_class": {
+      "properties": {
+        "labels": {
+          "type": "nested",
+	  "properties":{
+	     "label":{
+	        "type":"string",
+          	"analyzer": "label_analyzer"
+	      },
+              "lang":{
+                "type": "string",
+                "index": "not_analyzed"
+              }
+	   }
+        },
+	"uri":{
+	  "type": "string",
+	  "index": "not_analyzed"		
+	},
+	"dataSource":{
+	  "type": "string",
+	  "index": "not_analyzed"	
+	}
+      }
+    }
+  }
+}'
