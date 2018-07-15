@@ -1,0 +1,33 @@
+curl -XGET 'http://localhost:9200/sdo/ont_class/_search' -d \
+'{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "dataSource": "BFO" 
+          }
+        },
+        {
+          "nested": {
+            "path": "labels", 
+            "query": {
+              "bool": {
+                "must": [ 
+                  {
+                    "match": {
+                      "labels.label": "entity"
+                    }
+                  },
+                  {
+                    "match": {
+                      "labels.lang": "en"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+}}}'
